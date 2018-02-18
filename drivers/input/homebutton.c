@@ -33,14 +33,14 @@ static void hb_input_callback(struct work_struct *unused) {
 	if (!mutex_trylock(&hb_lock))
 		return;
 
-	if (hb_data.key_down)
-		set_vibrate(hb_data.vib_strength);
 
 	if (hb_data.scr_suspended && hb_data.enable_wakeup) {
 		input_event(hb_data.hb_dev, EV_KEY, KEY_POWER, hb_data.key_down);
+                set_vibrate(hb_data.vib_strength);
 	}
-		else if (hb_data.enable && !hb_data.scr_suspended) {
-		input_event(hb_data.hb_dev, EV_KEY, KEY_HOME, hb_data.key_down);
+        else if (hb_data.enable && !hb_data.scr_suspended) {
+		input_event(hb_data.hb_dev, EV_KEY, hb_data.key, hb_data.key_down);
+                set_vibrate(hb_data.vib_strength);
 	}
 
 	input_sync(hb_data.hb_dev);
